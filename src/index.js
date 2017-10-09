@@ -8,10 +8,18 @@ import {createStore, combineReducers, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 
 const imagesReducer = (state = [], action) => {
+  if (action.type === "GET_IMAGES"){
+    return action.images
+  }
   return state
 }
 
 const searchQueryReducer = (state = "", action) => {
+  if(action.type === "SEND_QUERY"){
+    return {
+      searchQuery: action.query
+    }
+  }
   return state
 }
 
@@ -20,7 +28,8 @@ const allReducers = combineReducers({
   searchQuery: searchQueryReducer
 })
 
-const store = createStore(allReducers, applyMiddleware(thunk))
+const store = createStore(allReducers)
+store.subscribe(() => console.log({ store: store.getState() }))
 
 ReactDOM.render(
   <Provider store={store}>
